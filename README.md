@@ -8,6 +8,9 @@ Control your media device through Harmony Hub with this card.
 ![Project Maintenance][maintenance-shield]
 [![hacs_badge](https://img.shields.io/badge/HACS-Default-orange.svg?style=for-the-badge)](https://github.com/hacs/integration)
 
+## Support
+
+For help, visit the Harmony Remote Card support thread [here](https://community.home-assistant.io/t/harmony-remote-card/474142)
 ## Installation through [HACS](https://github.com/hacs/integration)
 
 ## Configurations:
