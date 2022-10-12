@@ -1,4 +1,4 @@
-# Harmony Remote card Card for Home Assistant
+# Harmony Remote Card for Home Assistant
 Control your media device through Harmony Hub with this card.
 
 <img src='https://raw.githubusercontent.com/ljmerza/harmony-remote-card/master/card.png' />
