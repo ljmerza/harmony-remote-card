@@ -4,7 +4,7 @@ module.exports = {
   entry: "./src/index.js",
   devtool: "source-map",
   output: {
-    filename: "harmony-hub-card.js",
+    filename: "harmony-remote-card.js",
     path: path.resolve(__dirname, "../dist"),
   },
   module: {
