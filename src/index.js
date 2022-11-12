@@ -8,7 +8,7 @@ import defaultConfig from "./defaults";
 /* eslint no-console: 0 */
 console.info(`${packageJson.name} v${packageJson.version}`);
 
-class HarmonyHubCard extends LitElement {
+class HarmonyRemoteCard extends LitElement {
   static get properties() {
     return {
       hass: Object,
@@ -217,4 +217,4 @@ class HarmonyHubCard extends LitElement {
   }
 }
 
-customElements.define("harmony-hub-card", HarmonyHubCard);
+customElements.define("harmony-remote-card", HarmonyRemoteCard);
