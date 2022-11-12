@@ -125,7 +125,8 @@ class HarmonyRemoteCard extends LitElement {
     if (this._activeDevice) return this._activeDevice;
 
     const entityAttributes = this.hass.states[this.config.entity].attributes
-    const device = entityAttributes.devices_list[0];
+    const device = entityAttributes.devices_list && entityAttributes.devices_list[0];
+    if(!device) return;
 
     this.setActiveDevice(device);
     return device;
