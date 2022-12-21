@@ -39,6 +39,10 @@ class HarmonyRemoteCard extends LitElement {
    * @return {TemplateResult}
    */
   render() {
+    if(!this.hass.states[this.config.entity]) {
+      throw new Error(`Entity not found: ${this.config.entity}`);
+    }
+    
     return html`<ha-card>${this.renderBody()}</ha-card>`;
   }
 
@@ -50,9 +54,12 @@ class HarmonyRemoteCard extends LitElement {
 
   renderActivities() {
     const prename = this.config.entity.split(".")[1];
+    const entity = this.hass.states[this.config.entity];
+    if(!entity) return html``;
 
-    const entityState = this.hass.states[this.config.entity].state;
-    const entityAttributes = this.hass.states[this.config.entity].attributes
+    const entityState = entity.state;
+    const entityAttributes = entity.attributes
+
     if(!entityAttributes.activity_list || entityAttributes.activity_list.length === 0) return;
 
     return html`
@@ -95,7 +102,10 @@ class HarmonyRemoteCard extends LitElement {
   }
 
   renderDevices() {
-    const entityAttributes = this.hass.states[this.config.entity].attributes
+    const entity = this.hass.states[this.config.entity];
+    if(!entity) return html``;
+    
+    const entityAttributes = entity.attributes
     if(!entityAttributes.devices_list || entityAttributes.devices_list.length === 0) return;
     const activeDevice = this.getActiveDevice();
 
@@ -124,7 +134,10 @@ class HarmonyRemoteCard extends LitElement {
   getActiveDevice() {
     if (this._activeDevice) return this._activeDevice;
 
-    const entityAttributes = this.hass.states[this.config.entity].attributes
+    const entity = this.hass.states[this.config.entity];
+    if(!entity) return;
+
+    const entityAttributes = entity.attributes
     const device = entityAttributes.devices_list && entityAttributes.devices_list[0];
     if(!device) return;
 
@@ -206,7 +219,7 @@ class HarmonyRemoteCard extends LitElement {
     const activeDevice = this.getActiveDevice();
     this.callService({
       service,
-      data: { command, device: activeDevice.device },
+      data: { command, device: activeDevice },
     });
   }
 
