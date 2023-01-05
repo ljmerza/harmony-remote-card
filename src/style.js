@@ -34,6 +34,7 @@ const style = css`
     flex-wrap: wrap;
     margin-bottom: 1rem;
     margin-right: -0.5rem;
+    justify-content: center;
   }
 
   .devices {
@@ -41,6 +42,7 @@ const style = css`
     flex-wrap: wrap;
     margin-bottom: 1rem;
     margin-right: -0.5rem;
+    justify-content: center;
   }
 
   .activities button,
@@ -81,6 +83,7 @@ const style = css`
     display: flex;
     flex-wrap: wrap;
     margin-top: -0.5rem;
+    justify-content: center;
   }
 
   .remote-container .commands button {
