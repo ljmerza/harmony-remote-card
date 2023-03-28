@@ -156,7 +156,9 @@ class HarmonyRemoteCard extends LitElement {
 
   renderRemote() {
     const activeDevice = this.getActiveDevice();
+
     if(!activeDevice) return null;
+    if(!this.config.showPad) return null;
 
     const customCommands = this.getActiveDeviceCustomCommands();
 
@@ -166,22 +168,22 @@ class HarmonyRemoteCard extends LitElement {
           <div>
             <button
               class="rotate"
-              @click=${() => this.commandService({ command: "DirectionUp" })}
+              @click=${() => this.commandService({ command: this.config.upPad })}
             >
               <ha-icon icon="mdi:chevron-left"></ha-icon>
             </button>
           </div>
           <div>
             <button
-              @click=${() => this.commandService({ command: "DirectionLeft" })}
+              @click=${() => this.commandService({ command: this.config.leftPad })}
             >
               <ha-icon icon="mdi:chevron-left"></ha-icon>
             </button>
             <button
-              @click=${() => this.commandService({ command: "Select" })}
+              @click=${() => this.commandService({ command: this.config.centerPad })}
             ></button>
             <button
-              @click=${() => this.commandService({ command: "DirectionRight" })}
+              @click=${() => this.commandService({ command: this.config.rightPad })}
             >
               <ha-icon icon="mdi:chevron-right"></ha-icon>
             </button>
@@ -189,7 +191,7 @@ class HarmonyRemoteCard extends LitElement {
           <div>
             <button
               class="rotate"
-              @click=${() => this.commandService({ command: "DirectionDown" })}
+              @click=${() => this.commandService({ command: this.config.downPad })}
             >
               <ha-icon icon="mdi:chevron-right"></ha-icon>
             </button>
@@ -210,13 +212,15 @@ class HarmonyRemoteCard extends LitElement {
     `;
   }
 
-  getDeviceDisplayName(deviceConfig) {
-    console.log({ deviceConfig });
-    return "test";
+  vibrate() {
+    if(window && window.navigator && window.navigator.vibrate && this.config.vibrate) {
+      window.navigator.vibrate(50)
+    }
   }
 
   commandService({ service = "send_command", command }) {
     const activeDevice = this.getActiveDevice();
+
     this.callService({
       service,
       data: { command, device: activeDevice },
@@ -224,6 +228,8 @@ class HarmonyRemoteCard extends LitElement {
   }
 
   callService({ domain = "remote", service = "", data }) {
+    this.vibrate();
+
     this.hass.callService(domain, service, {
       entity_id: this.config.entity,
       ...data,

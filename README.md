@@ -31,6 +31,13 @@ entity: remote.harmony_hub
 | type | string | **Required** | `custom:harmony-remote-card`
 | entity | string | **Required** | `remote.harmony_hub` the name of the harmony hub entity
 | devices  | Array | **Optional** | a list of devices to add custom commands to. See below for more info.
+| vibrate  | Boolean | **Optional** | `true` vibrate on button push
+| showPad  | Boolean | **Optional** | `true` show D-Pad
+| leftPad  | String | **Optional** | `DirectionLeft` command sent for the left pad
+| rightPad  | String | **Optional** | `DirectionRight` command sent for the right pad
+| upPad  | String | **Optional** | `DirectionUp` command sent for the up pad
+| downPad  | String | **Optional** | `DirectionDown` command sent for the down pad
+| centerPad  | String | **Optional** | `OK` command sent for the center pad
 
 ### devices Options:
 
