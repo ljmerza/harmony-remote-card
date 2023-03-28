@@ -58,7 +58,7 @@ entity: remote.harmony_hub
 Example config:
 
 ```yaml
-type: custom:harmony-hub-card
+type: custom:harmony-remote-card
 entity: remote.harmony_hub
 devices:
   - name: Media Room Shield
