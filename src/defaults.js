@@ -1,6 +1,7 @@
 export default {
   entity: "",
   devices: [],
+  activities: [],
   vibrate: true,
   showPad: true,
   leftPad: 'DirectionLeft',

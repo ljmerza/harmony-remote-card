@@ -57,10 +57,14 @@ class HarmonyRemoteCard extends LitElement {
     const entity = this.hass.states[this.config.entity];
     if(!entity) return html``;
 
-    const entityState = entity.state;
-    const entityAttributes = entity.attributes
+    const configActivities = this.config.activities;
 
-    if(!entityAttributes.activity_list || entityAttributes.activity_list.length === 0) return;
+    const entityState = entity.state;
+    const entityAttributes = entity.attributes;
+
+    const activityList = entityAttributes.activity_list || [];
+
+    const uiList = configActivities.length ? configActivities: activityList;
 
     return html`
       <div class="activities">
@@ -75,10 +79,23 @@ class HarmonyRemoteCard extends LitElement {
           Off
         </button>
 
-        ${entityAttributes.activity_list.map((activity) => {
-          const entityName = `switch.${prename}_${activity
+        ${uiList.map((item) => {
+          // if using custom config then set those props
+          if(configActivities.length){
+            // check if custom name exists
+            if(!activityList.includes(item.activity)) {
+              console.warn(`The custom activity name ${activity.name} does not exist: ${activityList.join(', ')}`)
+              return html``
+            }
+          }
+
+          const activityName = item.name || item.activity || item;
+          const activity = item.activity || item;
+
+          const entityName = item.entity || `switch.${prename}_${activity
             .replace(/ /g, "_")
             .toLowerCase()}`;
+
           const entity = this.hass.states[entityName];
           const isActive = entity && entity.state === "on";
 
@@ -93,7 +110,8 @@ class HarmonyRemoteCard extends LitElement {
               class="${isActive ? "active-color" : ""}"
               @click="${onClick}"
             >
-              ${activity}
+              ${this.renderIcon(item.icon, item.hide_name)}
+              ${this.renderName(activityName, item.hide_name)}
             </button>
           `;
         })}
@@ -105,26 +123,36 @@ class HarmonyRemoteCard extends LitElement {
     const entity = this.hass.states[this.config.entity];
     if(!entity) return html``;
     
-    const entityAttributes = entity.attributes
-    if(!entityAttributes.devices_list || entityAttributes.devices_list.length === 0) return;
     const activeDevice = this.getActiveDevice();
+    const devices = this.config.devices || [];
 
     return html`
       <div class="devices">
-        ${entityAttributes.devices_list.map((device) => {
+        ${devices.map((device) => {
           return html`
             <button
-              class="${activeDevice === device
+              class="device-btn ${activeDevice === device.name
                 ? "active-color"
                 : ""}"
-              @click="${() => this.setActiveDevice(device)}"
+              @click="${() => this.setActiveDevice(device.name)}"
             >
-              ${device}
+              ${this.renderIcon(device.icon, device.hide_name)}
+              ${this.renderName(device.name, device.hide_name)}
             </button>
           `;
         })}
       </div>
     `;
+  }
+
+  renderIcon(icon, hide_name) {
+    if(!icon) return html``;
+    return html`<span class=${hide_name ? '' : 'btn-seperate'}><ha-icon .icon="${icon}"></ha-icon></span>`;
+  }
+
+  renderName(name, hide_name) {
+    if(hide_name) return html``;
+    return html`<span>${name}</span>`;
   }
 
   setActiveDevice(device) {
@@ -134,23 +162,15 @@ class HarmonyRemoteCard extends LitElement {
   getActiveDevice() {
     if (this._activeDevice) return this._activeDevice;
 
-    const entity = this.hass.states[this.config.entity];
-    if(!entity) return;
-
-    const entityAttributes = entity.attributes
-    const device = entityAttributes.devices_list && entityAttributes.devices_list[0];
+    const device = this.config.devices && this.config.devices[0];
     if(!device) return;
 
-    this.setActiveDevice(device);
+    this.setActiveDevice(device.name);
     return device;
   }
 
-  getActiveDeviceCustomCommands() {
-    if(!this.config.devices) return [];
-    const activeDevice = this.getActiveDevice();
-    if(!activeDevice) return [];
-
-    const deviceCommands = this.config.devices.find(device => device.name === activeDevice);
+  getDeviceCustomCommands(deviceName) {
+    const deviceCommands = this.config.devices.find(configDevice => configDevice.name === deviceName);
     return deviceCommands ? deviceCommands.commands : [];
   }
 
@@ -160,7 +180,7 @@ class HarmonyRemoteCard extends LitElement {
     if(!activeDevice) return null;
     if(!this.config.showPad) return null;
 
-    const customCommands = this.getActiveDeviceCustomCommands();
+    const customCommands = this.getDeviceCustomCommands(activeDevice);
 
     return html`
       <div class="remote-container">
@@ -197,13 +217,28 @@ class HarmonyRemoteCard extends LitElement {
             </button>
           </div>
         </div>
+
         <div class="commands">
         ${customCommands.map((cmd) => {
           const displayName = cmd.name || cmd;
+
+          // if we have hass service then check for rest of items needed and call service on click
+          const service = cmd.service;
+          if(service){
+            return html`
+            <button @click="${() => this.callService({ domain: cmd.domain, service, data: cmd.data  })}">
+              ${this.renderIcon(cmd.icon, cmd.hide_name)}
+              ${this.renderName(displayName, cmd.hide_name)}
+            </button>
+          `;
+          }
+
           const command = cmd.command || cmd;
+
           return html`
             <button @click="${() => this.commandService({ command })}">
-              ${displayName}
+              ${this.renderIcon(cmd.icon, cmd.hide_name)}
+              ${this.renderName(displayName, cmd.hide_name)}
             </button>
           `;
         })}

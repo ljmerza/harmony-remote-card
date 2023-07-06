@@ -31,6 +31,7 @@ entity: remote.harmony_hub
 | type | string | **Required** | `custom:harmony-remote-card`
 | entity | string | **Required** | `remote.harmony_hub` the name of the harmony hub entity
 | devices  | Array | **Optional** | a list of devices to add custom commands to. See below for more info.
+| activities  | Array | **Optional** | a list of activities. Note this will override the default activities shown
 | vibrate  | Boolean | **Optional** | `true` vibrate on button push
 | showPad  | Boolean | **Optional** | `true` show D-Pad
 | leftPad  | String | **Optional** | `DirectionLeft` command sent for the left pad
@@ -44,14 +45,31 @@ entity: remote.harmony_hub
 | Name | Type | Requirement | Description
 | ---- | ---- | ------- | -----------
 | name | string | **Required** | the name of the device you want custom commands on
-| commands | string | **Required** | the name of the command in your harmony.conf file for this device. Can be a simple list or a list of objects with name and command properties.
+| commands | string | **Required** | the name of the command in your harmony.conf file for this device. Can be a simple list or a list of objects with name and command properties. Can also be a service call with `service`, `domain`, `data` options
+| icon | string | **Optional** | show an icon for the device
+| hide_name | boolean | **Optional** | hide the name of the device
+
+### activites Options:
+
+| Name | Type | Requirement | Description
+| ---- | ---- | ------- | -----------
+| activity | string | **Required** | the name of the activity. Must match the exact name in the harmony.conf file
+| name | string | **Optional** | custom name of the activity
+| icon | string | **Optional** | show an icon for the activity
+| hide_name | boolean | **Optional** | hide the name of the activity
+| entity | string | **Optional** | set the entity name for the activity
 
 ### commands Options:
 
 | Name | Type | Requirement | Description
 | ---- | ---- | ------- | -----------
 | name | string | **Required** | the custom name of the command
-| command | string | **Required** | the name of the command in your harmony.conf file.
+| icon | string | **Optional** | show an icon for the command
+| hide_name | boolean | **Optional** | hide the name of the command
+| command | string | **Optional** | the name of the command in your harmony.conf file.
+| service | string | **Optional** | the name of the service call
+| domain | string | **Optional** | the domain of the service call
+| data | object | **Optional** | the data for the service call
 
 ---
 
@@ -60,6 +78,14 @@ Example config:
 ```yaml
 type: custom:harmony-remote-card
 entity: remote.harmony_hub
+activities:
+  - activity: PC
+    icon: mdi:laptop
+    hide_icon: true
+  - activity: XBox
+    name: Xbox One
+  - activity: PS5
+  - activity: Shield
 devices:
   - name: Media Room Shield
     commands:
@@ -68,11 +94,14 @@ devices:
       - name: Power Off
         command: PowerOff
   - name: LG TV
+    icon: mdi:television
+    hide_icon: true
     commands:
       - Mute
       - Info
       - name: InputHdmi1
         command: InputHdmi1
+    show_pad: false
   - name: Denon AV Receiver
     commands:
       - Mute
@@ -83,6 +112,13 @@ devices:
         command: VolumeDown
       - name: Volume Up
         command: VolumeUp
+      - name: Lights
+        service: toggle
+        domain: lights
+        data:
+          - entity_id: light.main_lights
+        
+
 ```
 
 Enjoy my card? Help me out for a couple of :beers: or a :coffee:!

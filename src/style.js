@@ -6,14 +6,14 @@ const style = css`
   }
 
   button {
-    display: inline-block;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
     font-weight: 400;
     text-align: center;
     white-space: nowrap;
     vertical-align: middle;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
     user-select: none;
     border: 1px solid transparent;
     padding: 0.375rem 0.75rem;
@@ -25,6 +25,11 @@ const style = css`
     background-color: var(--primary-color);
     color: var(--primary-text-color);
   }
+
+  .btn-seperate {
+    margin-right: 10px;
+  }
+
 
   .activities {
     display: flex;
