@@ -44,7 +44,8 @@ entity: remote.harmony_hub
 
 | Name | Type | Requirement | Description
 | ---- | ---- | ------- | -----------
-| name | string | **Required** | the name of the device you want custom commands on
+| name | string | **Required** | the name of the device you want custom commands on (must match the harmony integration device name)
+| friendly_name | string | **Required** | the display name of the device
 | commands | string | **Required** | the name of the command in your harmony.conf file for this device. Can be a simple list or a list of objects with name and command properties. Can also be a service call with `service`, `domain`, `data` options
 | icon | string | **Optional** | show an icon for the device
 | hide_name | boolean | **Optional** | hide the name of the device

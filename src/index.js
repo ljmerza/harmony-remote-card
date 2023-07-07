@@ -137,7 +137,7 @@ class HarmonyRemoteCard extends LitElement {
               @click="${() => this.setActiveDevice(device.name)}"
             >
               ${this.renderIcon(device.icon, device.hide_name)}
-              ${this.renderName(device.name, device.hide_name)}
+              ${this.renderName(device.friendly_name || device.name, device.hide_name)}
             </button>
           `;
         })}
