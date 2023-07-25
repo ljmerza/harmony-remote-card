@@ -178,7 +178,7 @@ class HarmonyRemoteCard extends LitElement {
     const activeDevice = this.getActiveDevice();
 
     if(!activeDevice) return null;
-    if(!this.config.showPad) return null;
+    if(!this.config.show_pad) return null;
 
     const customCommands = this.getDeviceCustomCommands(activeDevice);
 
