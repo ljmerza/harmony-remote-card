@@ -175,7 +175,7 @@ class HarmonyRemoteCard extends LitElement {
   }
 
   renderPad() {
-    if(!this.config.show_pad) return null;
+    if(!this.config.showPad) return null;
 
     return html`
       <div class="remote">
