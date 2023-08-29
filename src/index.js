@@ -174,49 +174,55 @@ class HarmonyRemoteCard extends LitElement {
     return deviceCommands ? deviceCommands.commands : [];
   }
 
+  renderPad() {
+    if(!this.config.show_pad) return null;
+
+    return html`
+      <div class="remote">
+      <div>
+        <button
+          class="rotate"
+          @click=${() => this.commandService({ command: this.config.upPad })}
+        >
+          <ha-icon icon="mdi:chevron-left"></ha-icon>
+        </button>
+      </div>
+      <div>
+        <button
+          @click=${() => this.commandService({ command: this.config.leftPad })}
+        >
+          <ha-icon icon="mdi:chevron-left"></ha-icon>
+        </button>
+        <button
+          @click=${() => this.commandService({ command: this.config.centerPad })}
+        ></button>
+        <button
+          @click=${() => this.commandService({ command: this.config.rightPad })}
+        >
+          <ha-icon icon="mdi:chevron-right"></ha-icon>
+        </button>
+      </div>
+      <div>
+        <button
+          class="rotate"
+          @click=${() => this.commandService({ command: this.config.downPad })}
+        >
+          <ha-icon icon="mdi:chevron-right"></ha-icon>
+        </button>
+      </div>
+    </div>
+    `;
+  }
+
   renderRemote() {
     const activeDevice = this.getActiveDevice();
-
     if(!activeDevice) return null;
-    if(!this.config.show_pad) return null;
 
     const customCommands = this.getDeviceCustomCommands(activeDevice);
 
     return html`
       <div class="remote-container">
-        <div class="remote">
-          <div>
-            <button
-              class="rotate"
-              @click=${() => this.commandService({ command: this.config.upPad })}
-            >
-              <ha-icon icon="mdi:chevron-left"></ha-icon>
-            </button>
-          </div>
-          <div>
-            <button
-              @click=${() => this.commandService({ command: this.config.leftPad })}
-            >
-              <ha-icon icon="mdi:chevron-left"></ha-icon>
-            </button>
-            <button
-              @click=${() => this.commandService({ command: this.config.centerPad })}
-            ></button>
-            <button
-              @click=${() => this.commandService({ command: this.config.rightPad })}
-            >
-              <ha-icon icon="mdi:chevron-right"></ha-icon>
-            </button>
-          </div>
-          <div>
-            <button
-              class="rotate"
-              @click=${() => this.commandService({ command: this.config.downPad })}
-            >
-              <ha-icon icon="mdi:chevron-right"></ha-icon>
-            </button>
-          </div>
-        </div>
+        ${this.renderPad()}
 
         <div class="commands">
         ${customCommands.map((cmd) => {
