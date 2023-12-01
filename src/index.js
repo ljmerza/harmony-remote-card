@@ -66,6 +66,9 @@ class HarmonyRemoteCard extends LitElement {
 
     const uiList = configActivities.length ? configActivities: activityList;
 
+    const entityName = this.config.activityEntity;
+    const selectEntity = this.hass.states[entityName];
+
     return html`
       <div class="activities">
         <button
@@ -79,7 +82,7 @@ class HarmonyRemoteCard extends LitElement {
           Off
         </button>
 
-        ${uiList.map((item) => {
+        ${selectEntity && uiList.map((item) => {
           // if using custom config then set those props
           if(configActivities.length){
             // check if custom name exists
@@ -91,19 +94,18 @@ class HarmonyRemoteCard extends LitElement {
 
           const activityName = item.name || item.activity || item;
           const activity = item.activity || item;
+          const isActive = selectEntity.state === activityName;
 
-          const entityName = item.entity || `switch.${prename}_${activity
-            .replace(/ /g, "_")
-            .toLowerCase()}`;
-
-          const entity = this.hass.states[entityName];
-          const isActive = entity && entity.state === "on";
-
-          const onClick = () =>
+          const onClick = () => {
+            console.log('vlick')
             this.callService({
-              service: "turn_on",
-              data: { activity },
+              entityId: selectEntity.entity_id,
+              domain: 'select',
+              service: "select_option",
+              data: { option: activity },
             });
+          }
+            
 
           return html`
             <button
@@ -259,20 +261,21 @@ class HarmonyRemoteCard extends LitElement {
     }
   }
 
-  commandService({ service = "send_command", command }) {
+  commandService({ domain = "remote", service = "send_command", command }) {
     const activeDevice = this.getActiveDevice();
 
     this.callService({
+      domain,
       service,
       data: { command, device: activeDevice },
     });
   }
 
-  callService({ domain = "remote", service = "", data }) {
+  callService({ domain = "remote", service = "", entityId, data }) {
     this.vibrate();
 
     this.hass.callService(domain, service, {
-      entity_id: this.config.entity,
+      entity_id: entityId || this.config.entity,
       ...data,
     });
   }

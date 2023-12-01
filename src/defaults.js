@@ -1,5 +1,6 @@
 export default {
   entity: "",
+  activityEntity: "",
   devices: [],
   activities: [],
   vibrate: true,

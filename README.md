@@ -30,6 +30,7 @@ entity: remote.harmony_hub
 | ---- | ---- | ------- | -----------
 | type | string | **Required** | `custom:harmony-remote-card`
 | entity | string | **Required** | `remote.harmony_hub` the name of the harmony hub entity
+| activityEntity | string | **Optional** | `select.harmony_hub_activities` the name of the harmony hub activities select entity. Required to set activities.
 | devices  | Array | **Optional** | a list of devices to add custom commands to. See below for more info.
 | activities  | Array | **Optional** | a list of activities. Note this will override the default activities shown
 | vibrate  | Boolean | **Optional** | `true` vibrate on button push
