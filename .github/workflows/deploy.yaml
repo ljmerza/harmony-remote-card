@@ -36,14 +36,15 @@ jobs:
       - name: Run build
         run: npm run build
 
-      - name: Archive production artifacts
-        run: zip -r dist.zip dist
-
-      - name: Upload Artifact
-        uses: actions/upload-artifact@v2
-        with:
-          name: dist
-          path: dist.zip
+      - name: List files in dist
+        id: list_files
+        run: |
+          files=""
+          for file in dist/*; do
+            [[ -f $file ]] || continue
+            files="$files $file"
+          done
+          echo "::set-output name=files::$files"
 
       - name: Determine TAG_NAME
         run: |
@@ -61,11 +62,15 @@ jobs:
           prerelease: false
 
       - name: Upload Release Asset
-        uses: actions/upload-release-asset@v1
+        run: |
+          for file in ${{ steps.list_files.outputs.files }}
+          do
+            curl \
+              -X POST \
+              -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+              -H "Content-Type: $(file -b --mime-type $file)" \
+              --data-binary @$file \
+              "${{ steps.create_release.outputs.upload_url }}?name=$(basename $file)"
+          done
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./dist.zip
-          asset_name: dist.zip
-          asset_content_type: application/zip
