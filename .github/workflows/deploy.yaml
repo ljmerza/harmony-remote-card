@@ -31,7 +31,7 @@ jobs:
           default: 'patch'
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
       - name: Run build
         run: npm run build
