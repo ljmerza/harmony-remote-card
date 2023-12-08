@@ -17,9 +17,17 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: '16'
-
-      - name: Increment package.json version
-        run: npm version patch
+      
+      - name:  'Automated Version Bump'
+        uses:  'phips28/gh-action-bump-version@master'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          minor-wording: 'add,Adds,new'
+          major-wording: 'MAJOR,cut-major'
+          patch-wording: 'patch,fixes'
+          rc-wording: 'RELEASE,alpha'
+          default: 'patch'
 
       - name: Install dependencies
         run: npm install
