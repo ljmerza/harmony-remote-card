@@ -37,10 +37,13 @@ jobs:
         run: npm run build
 
       - name: Archive production artifacts
+        run: zip -r dist.zip dist
+
+      - name: Upload Artifact
         uses: actions/upload-artifact@v2
         with:
           name: dist
-          path: dist
+          path: dist.zip
 
       - name: Determine TAG_NAME
         run: |
@@ -63,6 +66,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./dist
+          asset_path: ./dist.zip
           asset_name: dist.zip
           asset_content_type: application/zip
