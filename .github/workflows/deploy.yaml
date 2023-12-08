@@ -36,16 +36,6 @@ jobs:
       - name: Run build
         run: npm run build
 
-      - name: List files in dist
-        id: list_files
-        run: |
-          files=""
-          for file in dist/*; do
-            [[ -f $file ]] || continue
-            files="$files $file"
-          done
-          echo "::set-output name=files::$files"
-
       - name: Determine TAG_NAME
         run: |
            echo "TAG_NAME=$(git describe --tags --abbrev=0)" >> $GITHUB_ENV
@@ -62,17 +52,11 @@ jobs:
           prerelease: false
 
       - name: Upload Release Asset
-        run: |
-          for file in dist/*; do
-            [[ -f "$file" ]] || continue  # Skip if not a file
-            echo "Uploading $file..."
-            curl \
-              -X POST \
-              -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-              -H "Content-Type: $(file -b --mime-type "$file")" \
-              --data-binary @"$file" \
-              "${{ steps.create_release.outputs.upload_url }}?name=$(basename "$file")"
-            echo ""  # New line for clarity in logs
-          done
+        uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./dist/harmony-remote-card.js
+          asset_name: harmony-remote-card.js
+          asset_content_type: application/javascript
