@@ -1,6 +1,6 @@
 {
     "name": "harmony-remote-card",
-    "version": "2.0.8",
+    "version": "2.0.9",
     "description": "A Logitech harmony remote card for Home Assistant Lovelace UI",
     "keywords": [
         "home-assistant",
