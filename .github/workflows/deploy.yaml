@@ -63,14 +63,16 @@ jobs:
 
       - name: Upload Release Asset
         run: |
-          for file in ${{ steps.list_files.outputs.files }}
-          do
+          for file in dist/*; do
+            [[ -f "$file" ]] || continue  # Skip if not a file
+            echo "Uploading $file..."
             curl \
               -X POST \
               -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-              -H "Content-Type: $(file -b --mime-type $file)" \
-              --data-binary @$file \
-              "${{ steps.create_release.outputs.upload_url }}?name=$(basename $file)"
+              -H "Content-Type: $(file -b --mime-type "$file")" \
+              --data-binary @"$file" \
+              "${{ steps.create_release.outputs.upload_url }}?name=$(basename "$file")"
+            echo ""  # New line for clarity in logs
           done
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
