@@ -1,12 +1,20 @@
 # Harmony Remote Card for Home Assistant
+
+<p align="center">
+<img src="https://img.shields.io/github/stars/ljmerza/harmony-remote-card?style=for-the-badge&label=Stars&color=orange" alt="Stars">
+<a href="https://github.com/ljmerza/harmony-remote-card/releases"><img src="https://img.shields.io/github/downloads/ljmerza/harmony-remote-card/total?style=for-the-badge&label=Downloads&color=blue" alt="Downloads"></a>
+<a href="https://github.com/ljmerza/harmony-remote-card/releases/latest"><img src="https://img.shields.io/github/v/release/ljmerza/harmony-remote-card?style=for-the-badge&color=purple" alt="Version"></a>
+<a href="https://github.com/ljmerza/harmony-remote-card/actions/workflows/deploy.yaml"><img src="https://img.shields.io/github/actions/workflow/status/ljmerza/harmony-remote-card/deploy.yaml?style=for-the-badge&label=Build" alt="Build"></a>
+<a href="https://github.com/ljmerza/harmony-remote-card/blob/master/LICENSE"><img src="https://img.shields.io/github/license/ljmerza/harmony-remote-card?style=for-the-badge&label=License&color=green" alt="License"></a>
+<a href="https://github.com/hacs/integration"><img src="https://img.shields.io/badge/HACS-Default-41BDF5?style=for-the-badge" alt="HACS Default"></a>
+</p>
+
+<p align="center">
+<a href="https://www.buymeacoffee.com/JMISm06AD"><img src="https://img.shields.io/badge/Buy%20Me%20A%20Coffee-FFDD00?style=for-the-badge&logo=buy-me-a-coffee&logoColor=black" alt="Buy Me A Coffee"></a>
+</p>
 Control your media device through Harmony Hub with this card.
 
 <img src='https://raw.githubusercontent.com/ljmerza/harmony-remote-card/master/card.png' />
-
-[![GitHub Release][releases-shield]][releases]
-[![License][license-shield]](LICENSE.md)
-![Project Maintenance][maintenance-shield]
-[![hacs_badge](https://img.shields.io/badge/HACS-Default-orange.svg?style=for-the-badge)](https://github.com/hacs/integration)
 
 ## Support
 
@@ -122,15 +130,3 @@ devices:
         
 
 ```
-
-Enjoy my work? Help me out for a couple of :beers: or a :coffee:!
-
-<a href="https://www.buymeacoffee.com/JMISm06AD"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" height="41" width="174"></a>
-
-
-[commits-shield]: https://img.shields.io/github/commit-activity/y/ljmerza/harmony-remote-card.svg?style=for-the-badge
-[commits]: https://github.com/ljmerza/harmony-remote-card/commits/master
-[license-shield]: https://img.shields.io/github/license/ljmerza/harmony-remote-card.svg?style=for-the-badge
-[maintenance-shield]: https://img.shields.io/badge/maintainer-Leonardo%20Merza%20%40ljmerza-blue.svg?style=for-the-badge
-[releases-shield]: https://img.shields.io/github/release/ljmerza/harmony-remote-card.svg?style=for-the-badge
-[releases]: https://github.com/ljmerza/harmony-remote-card/releases
